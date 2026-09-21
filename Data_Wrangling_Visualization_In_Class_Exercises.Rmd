@@ -9,11 +9,25 @@ date: "2026-08"
 Save this file as a .png. Play around with widths and heights of the plots to get them just right. 
 ```{r setup, include=TRUE}
 
+NHANES <- read.csv("In_Class_Exercises_Arsenic.csv", header=TRUE, sep=",")
+#head(NHANES)
+
+boxplot(Arsenic_Total ~ Gender, data = NHANES,
+        xlab = "Gender",
+        ylab = "Total Arsenic Levels",
+        main = "Total Arsenic Levels vs Gender",
+        border = c("tomato", "blue"),
+        ylim = c(0, 200))
+
 ```
 
 2) Using `ggplot2()`, generate another box plot using the data frame of NHANES data from the previous question, but this time make it a box plot grouped by gender on the y-axis. Break up each of the groups by marital status. Add jitter to each of the box plots. 
 
 ```{r}
+
+head(NHANES)
+
+
 
 ```
 
