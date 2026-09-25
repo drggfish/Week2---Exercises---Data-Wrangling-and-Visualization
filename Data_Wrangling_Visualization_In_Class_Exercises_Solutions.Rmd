@@ -9,7 +9,7 @@ date: "2026-08"
 Save this file as a .png. Play around with widths and heights of the plots to get them just right. 
 
 ```{r setup, include=TRUE}
-dat <- read.csv("../data/In_Class_Exercises_Arsenic.csv")
+dat <- read.csv("In_Class_Exercises_Arsenic.csv")
 
 png("arsenic_boxplot.png", width = 1500, height = 1500, res = 300)
 boxplot(Arsenic_Total ~ Gender, data = dat, main = "Arsenic Total by Gender", col = c("#E9D7C0","#BAD6D1"), xlab = "Gender", ylab = "Arsenic Total (ug/L)")

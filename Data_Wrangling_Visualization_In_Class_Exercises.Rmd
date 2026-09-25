@@ -25,9 +25,20 @@ boxplot(Arsenic_Total ~ Gender, data = NHANES,
 
 ```{r}
 
-head(NHANES)
+#head(NHANES)
 
+#summary(NHANES)  # Arsenic_Total has 218 NA's
 
+ggplot(NHANES, aes(x = Arsenic_Total, y = Gender, fill = Marital_Status)) +
+  geom_boxplot(width = 0.6,
+               position = position_dodge(width = 0.75),
+               outlier.shape = NA,
+               alpha = 0.7) +  
+  geom_jitter(aes(color = Marital_Status),
+              position = position_dodge(width = 0.75),
+              size = 1.5, alpha = 0.6) +  
+  theme_minimal() +
+  labs(title = "Arsenic Total by Gender")
 
 ```
 
@@ -35,16 +46,71 @@ head(NHANES)
 
 ```{r}
 
+library(ggpubr)
+
+#p <- ggplot(gene_metadata, aes(x = timepoint, y = CXCL13, fill = timepoint)) +
+#  geom_boxplot() +
+#  labs(x = "Time Point",
+#       y = "CXCL13 Count",
+#       fill = "Time Point", 
+#       title = "CXCL13 Count Distribution by Treatment Time Point") +
+#  theme_minimal() +
+#  scale_fill_brewer(palette = "Set1") +
+#  stat_compare_means(method = "wilcox")
+#print(p)
+
+#NHANES_Minimal <- NHANES %>%
+#  filter(Marital_Status == "Never Married" | Marital_Status == "Married")
+
+ggplot(NHANES_Minimal, aes(x = Marital_Status, y = Arsenic_Total)) +
+  geom_violin() +
+  labs(x = "Marital Status",
+       y = "Arsenic Total",
+       title = "Arsenic Total by Marital Status from NHANES Dataset") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  stat_compare_means(method = "wilcox")
+
 ```
 
 4) Generate your own random data of 200 participants containing the following columns: Participant_ID, Age, Sex, BMI, Ferritin_Level, and Disease_Status. Make it so that the "Cases" have generally lower ferritin levels. Normal ferritin levels are ~20–500 ng/mL in males and ~20–200 ng/mL in women. Make sure that BMIs are reasonable too! BMI is usually a normally distributed statistic centered around 25 (normal range: ~18.5–30+). Age should be just adults 18-99. Having done that, provide summary statistics for the ferritin levels. 
 
 ```{r}
+library(tidyverse)
+#Build the same data frame with a pipe
+set.seed(123)
+
+random_data_tbl <- tibble(
+  Participant_ID = str_c("Participant_", 1:200),
+  Age        = pmax(18, pmin(99, round(rnorm(200, mean = 67.5, sd = 20.66)))),
+  Sex        = sample(c("Male","Female"), 200, replace = TRUE),
+  Disease_Status = sample(c("Case","Control"), 200, replace = TRUE),
+  # Assume a perfectly symmetric interval 18.5 - 31.5.
+  # The distance from the mean to either edge is 6.5
+  # Because 95% of data in a normal distribution falls within 1.96 standard deviations    
+  # of the mean, you calculate the standard deviation like this 6.5/1.96
+  BMI        = pmax(10, pmin(40, round(rnorm(200, mean = 25, sd = 6.5/1.96))))
+) %>%
+  mutate(Ferritin_Level = ifelse(Sex == "Male", 
+                              rnorm(n(), mean = 25, sd = 2.9), 
+                              rnorm(n(), mean = 15, sd = 2.9)))
+
+random_data_tbl%>%                     # ← pipe: take the tibble and…
+  slice_head(n = 6)       # ← show the first six rows (same as `head()`)
 
 ```
 
 5) Convert the data frame to long format from wide format on the Age and Ferritin_Level columns. Remove the Sex column from this data frame. 
 ```{r}
+
+#random_data_age_sex <- pivot_longer(random_data,
+#                                           cols=c("Age","Heart_Rate"))
+
+random_data_tbl_long <- random_data_tbl %>%
+    select(-Sex) %>%
+    pivot_longer(.,cols=c("Age","Ferritin_Level"))
+
+random_data_tbl_long
 
 ```
 

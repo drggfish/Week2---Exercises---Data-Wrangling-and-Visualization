@@ -36,7 +36,7 @@ library(gridExtra)
 ### Generating Random Data
 In our previous lesson we learned about data structures, in particular we learned about data frames. As a refresher, data frames are two-dimensional structures that can hold different data types. Due to it's flexibility, data frames are a very popular way in which Data Scientists store information. 
 
-Today we will be dipping our toes into generating our own random data and working with that data in a data frame structure to begin data wrangling and gain a clear understanding of randomness, distributions, and sampling. While generating our own random data may initially appear to be a silly task, these hypothetical data sets aid us in exploring different scenarios, which is particularly useful in statistics, machine learning, and research. In fact, many authors make use of self-generated data to test tools they build for research, espcailly if data is not readily available. 
+Today we will be dipping our toes into generating our own random data and working with that data in a data frame structure to begin data wrangling and gain a clear understanding of randomness, distributions, and sampling. While generating our own random data may initially appear to be a silly task, these hypothetical data sets aid us in exploring different scenarios, which is particularly useful in statistics, machine learning, and research. In fact, many authors make use of self-generated data to test tools they build for research, especially if data is not readily available. 
 
 All that said, let's start generating some random data using the R functions `rnorm()` and `rbinom()`. `rnorm()`generate random data taken from a normal distribution. You can specify the number of digits that you need as well as the mean and standard deviation of your your data. Similarly, `rbinom()` generates values from a binomial distribution. Users can specify `size`, the number of trials, and `prob`, the probability of success on each trial. 
 
@@ -554,11 +554,11 @@ So far in this demonstration, we have generated our own data, but more often you
 
 ```{r}
 ## Change this file path to the path for the data on your local machine
-file_path <- "../data/"
+#file_path <- "../data/"
 
 ## Use read.delim to read in this data
-ra_df <- read.delim(paste0(file_path, "GSE198520_Raw_gene_count_matrix.txt"), row.names = 1)
-#ra_df <- read.delim("GSE198520_Raw_gene_count_matrix.txt", row.names = 1)
+#ra_df <- read.delim(paste0(file_path, "GSE198520_Raw_gene_count_matrix.txt"), row.names = 1)
+ra_df <- read.delim("GSE198520_Raw_gene_count_matrix.txt", row.names = 1)
 
 ## Visualize the data frame
 head(ra_df)
@@ -571,9 +571,11 @@ dim(ra_df)
 We have 19187 genes in this data frame. I say we check out the meta data associated with this project. That data is located in the metadata.csv file I have provided for you in the data directory.
 
 ```{r}
+
+#file_path <- getwd()
 ## Read in the file using read.csv()
-metadata <- read.csv(paste0(file_path,"metadata.csv"), row.names = 1)
-#metadata <- read.csv("metadata.csv", row.names = 1)
+#metadata <- read.csv(file_path,"metadata.csv"), row.names = 1)
+metadata <- read.csv("metadata.csv", row.names = 1)
 
 ## Visualize the contents of the file
 head(metadata)
